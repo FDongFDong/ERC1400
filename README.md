@@ -1,36 +1,40 @@
 ![Codefi](images/CodefiBanner.png)
 
-# Introduction
+> https://github.com/ndaxio/ERC1400
 
-Blockchain technology and more specifically the emergence of "programmable" tokens have opened a world of new possibilities for financial assets: the creation of digital assets.
-Digital assets are financial assets, which have been "tokenized". This means each asset is represented by a token on the blockchain.
-
-Those tokens can be represented by multiple standards:
- - **ERC20** is the most basic and most adopted token standard. It can be seen as the "axiom of token standards" and is compatible with the majority of existing tools and platforms.
- - **ERC1400** is a more evolved standard, also ERC20-compliant, precisely designed for the use case of tokenized financial assets, allowing to perform highly controllable token transfers.
-
-The following repository contains the ERC1400 implementation used by the Codefi Assets platform.
+해당 프로젝트는 스터디 차원에서 한글화하여 진행하겠습니다.
 
 
-# What is Codefi Assets?
+# 소개
 
-Codefi Assets is an advanced institutional technology platform for issuance and management of tokenized financial assets, powered by the Ethereum blockchain. Codefi Assets is a product created by ConsenSys.
+블록체인 기술, 특히 '프로그래밍 가능한' 토큰의 등장은 금융 자산에 대한 새로운 가능성, 즉 디지털 자산의 창출이라는 세계를 열었습니다.
+디지털 자산은 "토큰화"된 금융 자산입니다. 즉, 각 자산은 블록체인에서 토큰으로 표시됩니다.
 
+이러한 토큰은 여러 표준으로 표현할 수 있습니다:
+ - **ERC20** 는 가장 기본적이고 가장 많이 채택된 토큰 표준입니다. "토큰 표준의 공리"라고 할 수 있으며, 현존하는 대부분의 도구 및 플랫폼과 호환됩니다.
+ - **ERC1400** 는 보다 진화된 표준으로, ERC20을 준수하며 토큰화된 금융 자산의 사용 사례에 맞게 정밀하게 설계되어 고도로 제어 가능한 토큰 전송을 수행할 수 있습니다.
+
+다음 리포지토리에는 Codefi Assets 플랫폼에서 사용하는 ERC1400 구현이 포함되어 있습니다.
+
+
+#Codefi Assets이란 무엇인가요?
+
+Codefi Assets은 이더리움 블록체인을 기반으로 토큰화된 금융 자산을 발행하고 관리할 수 있는 고급 기관 기술 플랫폼입니다. Codefi Assets은 컨센시스에서 만든 제품입니다.
 https://codefi.consensys.net/codefiassets
 
-### A platform for financial asset issuance & management
+### 금융 자산 발행 및 관리를 위한 플랫폼
 
-The current capital market still needs to overcome a few pain points:
- - Today, it is cumbersome and costly to issue an asset.
- - Once issued, the assets are mainly reserved for high-ticket investors.
- - Finally, those assets are not easily tradeable, which strongly limits the secondary market possibilities.
+현재 자본 시장은 여전히 몇 가지 문제점을 극복해야 합니다:
+ - 오늘날 자산을 발행하는 것은 번거롭고 비용이 많이 듭니다.
+ - 발행된 자산은 주로 고액 투자자를 위해 예약되어 있습니다.
+ - 이러한 자산은 쉽게 거래할 수 없기 때문에 secondary 마켓의 가능성이 크게 제한됩니다.
 
-With Codefi Assets, we want to tokenize the capital market to tackle those pain points. In the new system, we imagine:
- - An asset issuance will be faster, simpler but also cheaper than today.
- - This reduction of costs will allow us to onboard smaller ticket investors.
- - Globally, the tokenization removes constraints for more liquid and frictionless asset transfers, while keeping a strong control over the market, thus liberating the secondary market.
+With Codefi Assets, 저희는 이러한 문제점을 해결하기 위해 자본 시장을 토큰화하고자 합니다. 새로운 시스템에서는 이렇게 상상합니다:
+ - 자산 발행이 지금보다 더 빠르고 간편해질 뿐만 아니라 비용도 절감됩니다.
+ - 이렇게 비용을 절감하면 소규모 티켓 투자자를 온보딩할 수 있습니다.
+ - 전 세계적으로 토큰화는 시장에 대한 강력한 통제력을 유지하면서 보다 유동적이고 마찰 없는 자산 이전을 위해 제약을 제거하여 secondary 마켓을 자유롭게 합니다.
 
-### Video demo of an asset issuance platform based on Codefi Assets technology
+### Codefi Assets 기술 기반의 자산 발행 플랫폼 데모 영상
 
 ![CodefiVideo](images/CodefiVideo.png)
 
@@ -38,7 +42,7 @@ Link to video:
 https://www.youtube.com/watch?v=PjunjtIj02c
 
 
-# Quick overview of token standards (ERC20, ERC1400) 
+# 토큰 표준에 대한 간략한 개요 (ERC20, ERC1400) 
 
 ![Picture1](images/Picture1.png)
 ![Picture2](images/Picture2.png)
@@ -46,24 +50,25 @@ https://www.youtube.com/watch?v=PjunjtIj02c
 ![Picture4](images/Picture4.png)
 
 
-# Why do we use the ERC1400 token standard on Codefi Assets?
+# CodeFi Asset에서 ERC1400 토큰 표준을 사용하는 이유는 무엇인가요?
 
-ERC1400 introduces additional features to ERC20 features, and provides issuers with strong control capabilities over their financial assets.
+ERC1400은 ERC20 기능에 추가 기능을 도입하고 발행자에게 금융 자산에 대한 강력한 제어 기능을 제공합니다.
 
 ### Introduction - The limits of ERC20 token standard
 
-Currently the most common and well-known standard within crypto community is the ERC20([eips.ethereum.org/EIPS/eip-20](https://eips.ethereum.org/EIPS/eip-20)).
-The vast majority of ICOs are based on this ERC20 standard, but it doesn't appear to be the most relevant standard for financial asset tokenization.
-The only parameters required to perform an ERC20 token transfer are the recipient's address and the value of the transfer, thus limiting the control possibilities over transfers:
+현재 암호화폐 커뮤니티에서 가장 일반적이고 잘 알려진 표준은 ERC20입니다.([eips.ethereum.org/EIPS/eip-20](https://eips.ethereum.org/EIPS/eip-20)).
+대다수의 ICO가 이 ERC20 표준을 기반으로 하지만, 금융 자산 토큰화에 가장 적합한 표준은 아닌 것으로 보입니다.
+ERC20 토큰 전송을 수행하는 데 필요한 매개변수는 수취인의 주소와 전송 값뿐이므로 전송에 대한 제어 가능성이 제한됩니다:
 ```
 function transfer(address recipient, uint256 value)
 ```
-All controls have to be hard-coded on-chain and are often limited to simple/binary checks e.g. checking whether an investor is blacklisted or not.
+모든 컨트롤은 on-chain에서 hard-code되어야 하며, 투자자가 블랙리스트에 있는지 여부를 확인하는 등 단순/바이너리 검사로 제한되는 경우가 많습니다.
 
-Codefi Assets makes use of more evolved/granular controls to secure transfers.
-Those controls can evolve quickly and require flexibility, which makes it difficult to hard-code them on-chain.
+Codefi Assets은 더욱 진화하고 세분화된 컨트롤을 사용하여 전송을 보호합니다.
 
-### Transfer controls based on certificates - A way to perform multisignature in one single transaction
+이러한 컨트롤은 빠르게 진화할 수 있고 유연성이 필요하기 때문에 on-chain에서 hard-code하기 어렵습니다.
+
+### 인증서 기반 전송 제어 - 하나의 단일 트랜잭션에서 다중 서명을 수행하는 방법
 
 The use of an additional 'data' parameter in the transfer functions can enable more evolved/granular controls:
 ```
