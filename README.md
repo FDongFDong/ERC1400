@@ -70,48 +70,51 @@ Codefi Assets은 더욱 진화하고 세분화된 컨트롤을 사용하여 전�
 
 ### 인증서 기반 전송 제어 - 하나의 단일 트랜잭션에서 다중 서명을 수행하는 방법
 
-The use of an additional 'data' parameter in the transfer functions can enable more evolved/granular controls:
+transfer 함수에 'data' 파라미터를 추가로 사용하면 더욱 진화되고 세분화된 제어가 가능합니다:
+
 ```
 function transferWithData(address recipient, uint256 value, bytes data)
 ```
-Codefi Assets fosters to use this additional 'data' field, available in the ERC1400 standard, in order to inject a certificate generated off-chain by the issuer.
-A token transfer shall be conditioned to the validity of the certificate, thus offering the issuer with strong control capabilities over its financial assets.
+
+Codefi Assets은 발행자가 off-chain에서 생성한 인증서를 삽입하기 위해 ERC1400 표준에서 사용할 수 있는 이 추가 '데이터' 필드를 사용하도록 장려합니다.
+토큰 전송은 인증서의 유효성을 조건으로 하여 발행자에게 금융 자산에 대한 강력한 통제 기능을 제공해야 합니다.
 
 ![Picture5](images/Picture5.png)
 
-The Codefi certificate contains:
- - The function ID which ensures the certificate can’t be used on an other function.
- - The parameters which ensures the input parameters have been validated by the issuer.
- - A validity date which ensures the certificate can’t be used after validity date.
- - A nonce which ensures the certificate can’t be used twice.
+Codefi 인증서에는 다음이 포함됩니다:
+ - 인증서를 다른 함수에 사용할 수 없도록 보장하는 함수 ID입니다.
+ - 발행자가 입력 매개변수의 유효성을 검사했는지 확인하는 매개변수입니다.
+ - 유효 기간이 지나면 인증서를 사용할 수 없도록 하는 유효 기간입니다.
+ - 인증서를 두 번 사용할 수 없도록 하는 논스입니다.
 
-Finally the certificate is signed by the issuer which ensures it is authentic.
+마지막으로 발행자가 인증서에 서명하여 인증서의 진위 여부를 확인합니다.
 
-The certificate enables the issuer to perform advanced conditional ownership, since he needs to be aware of all parameters of a transaction before generating the associated certificate.
+발행자는 연결된 인증서를 생성하기 전에 거래의 모든 매개 변수를 알고 있어야 하므로 인증서를 통해 고급 조건부 소유권을 수행할 수 있습니다.
 
 ![Picture6](images/Picture6.png)
 
-In a way, this can be seen as a way to perform multisignature in one single transaction since every asset transfer requires:
- - A valid transaction signature (signed by the investor)
- - A valid certificate signature (signed by the issuer)
+어떻게 보면 모든 자산 전송에 다중 서명이 필요하기 때문에 단일 트랜잭션에서 다중 서명을 수행하는 방법이라고 볼 수 있습니다:
+ - 유효한 거래 서명(투자자가 서명)
+ - 유효한 인증서 서명(발급자가 서명함)
 
- ### Example use case
+ ### 사용 사례 예시
  
- An example use case for the certificate validation is KYC verification.
-
- The certificate generator can be coupled to a KYC API, and only provide certificates to users who've completed their KYC verification before.
-
+ 인증서 유효성 검사의 사용 사례는 KYC 확인입니다.
+ 
+ "certificate generator"는 KYC API와 연결되어 있으며, KYC 검증을 완료한 사용자에게만 인증서를 제공할 수 있습니다.
+ 
  ![Picture7](images/Picture7.png)
 
-PS: Since the ERC1400 standard is agnostic about the way to control certificate, we didn't include our certificate controller in this repository (a mock is used instead). In order to perform real advanced conditional ownership, a certificate controller called 'CertificateController.sol' shall be placed in folder '/contracts/CertificateController' instead of the mock placed there.
+추신: ERC1400 표준은 인증서를 제어하는 방법에 대해 불가지론적이기 때문에 저희는 이 저장소에 인증서 컨트롤러를 포함하지 않았습니다(대신 모의가 사용됨). 실제 고급 조건부 소유권을 수행하려면 '/contracts/CertificateController' 폴더에 모의 인증서 대신 'CertificateController.sol'이라는 인증서 컨트롤러를 배치해야 합니다.
 
 
-# Description of ERC1400 standard
 
-ERC1400 introduces new concepts on top of ERC20 token standard:
- - **Granular transfer controls**: Possibility to perform granular controls on the transfers with a system of certificates (injected in the additional `data` field of the transfer method)
- - **Controllers**: Empowerment of controllers with the ability to send tokens on behalf of other addresses (e.g. force transfer).
- - **Partionned tokens** (partial-fungibility): Every ERC1400 token can be partitioned. The partition of a token, can be seen as the state of a token. It is well adapted for representing, classes of assets, performing corporate actions, etc.
+# ERC1400 표준에 대한 설명
+
+ERC1400은 ERC20 토큰 표준을 기반으로 새로운 개념을 도입했습니다:
+ - **세분화된 전송 제어**: 인증서 시스템을 사용하여 전송에 대한 세부적인 제어를 수행할 수 있습니다.(전송 방법의 추가 `데이터` 필드에 주입됨).
+ - **Controllers**: 다른 주소를 대신하여 토큰을 보낼 수 있는 기능을 컨트롤러에 부여합니다(예: 강제 전송).
+ - **Partionned tokens** (partial-fungibility): 모든 ERC1400 토큰은 분할될 수 있습니다. 토큰의 분할은 토큰의 상태로 볼 수 있습니다. 자산 클래스 표시, 기업 활동 수행 등에 적합합니다.
  - **Document management**: Possibility to bind tokens to hashes of legal documents, thus making the link between a blockchain transaction and the real world.
 
 Optionally, the following features can also be added:
