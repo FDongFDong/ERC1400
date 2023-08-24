@@ -115,34 +115,35 @@ ERC1400은 ERC20 토큰 표준을 기반으로 새로운 개념을 도입했습�
  - **세분화된 전송 제어**: 인증서 시스템을 사용하여 전송에 대한 세부적인 제어를 수행할 수 있습니다.(전송 방법의 추가 `데이터` 필드에 주입됨).
  - **Controllers**: 다른 주소를 대신하여 토큰을 보낼 수 있는 기능을 컨트롤러에 부여합니다(예: 강제 전송).
  - **Partionned tokens** (partial-fungibility): 모든 ERC1400 토큰은 분할될 수 있습니다. 토큰의 분할은 토큰의 상태로 볼 수 있습니다. 자산 클래스 표시, 기업 활동 수행 등에 적합합니다.
- - **Document management**: Possibility to bind tokens to hashes of legal documents, thus making the link between a blockchain transaction and the real world.
+ - **Document management**: "토큰"과 "법적 문서의 해시 값"을 바인딩하여 블록체인 트랜잭션과 현실 세계를 연결할 수 있습니다. 이는 토큰을 통해 특정 문서를 참조하거나, 해당 문서의 무결성을 보장하는데 사용될 수 있습니다.
+   - 예를 들어 누군가 블록체인에 토큰을 보내면서 그 토큰이 특정 계약서나 서류와 관련이 있다는 것을 증명하고 싶을 때 이 기능을 사용하면 됩니다.   
 
-Optionally, the following features can also be added:
- - **Hooks**: Possibility for token senders/recipients to setup hooks, e.g. automated actions executed everytime they send/receive tokens, thanks to [ERC1820](http://eips.ethereum.org/EIPS/eip-1820).
- - **Upgradeability**: Use of ERC1820([eips.ethereum.org/EIPS/eip-1820](http://eips.ethereum.org/EIPS/eip-1820)) as central contract registry to follow smart contract migrations.
-
+선택적으로 다음 기능도 추가할 수 있습니다:
+ - **Hooks**: 토큰을 보낼 때마다 받을 때마다 자동으로 실행되는 액션을 설정할 수 있습니다. 이러한 기능은 ERC1820의 인터페이스 검색을 위한 표준으로, 토큰과 관련된 다양한 기능을 보다 효율적으로 관리하고 사용할 수 있게 도와줍니다. [ERC1820](http://eips.ethereum.org/EIPS/eip-1820).
+ - **Upgradeability**: ERC1820 ([eips.ethereum.org/EIPS/eip-1820](http://eips.ethereum.org/EIPS/eip-1820)) 레지스트리를 사용하여 스마트 컨트랙트의 "이동" 또는 "업그레이드" 추적하고 관리할 수 있음을 의미합니다.
+   - 예를 들어 스마트 컨트랙트가 업그레이드 되었을 때, 새로운 컨트랙트 주소와 기능을 ERC1820 레지스트리에 업데이트하여 이를 쉽게 찾을 수 있도록 만듭니다. 
 
 # Focus on ERC1400 implementation choices
 
-The original submission with discussion can be found at: [github.com/ethereum/EIPs/issues/1411](https://github.com/ethereum/EIPs/issues/1411).
+토론이 포함된 원본 제출물은 다음에서 확인할 수 있습니다: [github.com/ethereum/EIPs/issues/1411](https://github.com/ethereum/EIPs/issues/1411).
 
-We've performed a few updates compared to the original submission, mainly to fit with business requirements + to save gas cost of contract deployment.
+비즈니스 요구사항에 부합하고 계약 배포에 드는 가스 비용을 절약하기 위해 원래 제출한 내용과 비교하여 몇 가지 업데이트를 수행했습니다.
 
-#### Choices made to fit with business requirements
+#### 비즈니스 요구 사항에 맞는 선택
  - Introduction of sender/recipient hooks ([IERC1400TokensRecipient](contracts/token/ERC1400Raw/IERC1400TokensRecipient.sol), [IERC1400TokensSender](contracts/token/ERC1400Raw/IERC1400TokensSender.sol)). Those are inspired by [ERC777 hooks]((https://eips.ethereum.org/EIPS/eip-777)), but they have been updated in order to support partitions, in order to become ERC1400-compliant.
  - Modification of view functions ('canTransferByPartition', 'canOperatorTransferByPartition') as consequence of our certificate design choice: the view functions need to have the exact same parameters as 'transferByPartition' and 'operatorTransferByPartition' in order to be in measure to confirm the certificate's validity.
  - Introduction of validator hook ([IERC1400TokensValidator](contracts/token/ERC1400Raw/IERC1400TokensValidator.sol)), to manage updates of the transfer validation policy across time (certificate, whitelist, blacklist, lock-up periods, investor caps, pauseability, etc.), thanks an upgradeable module.
  - Extension of ERC20's allowance feature to support partitions, in order to become ERC1400-compliant. This is particularly important for secondary market and delivery-vs-payment.
  - Possibility to migrate contract, and register new address in ERC1820 central registry, for smart contract upgradeability.
 
-#### Choices made to save gas cost of contract deployment
+#### 계약 배포에 드는 가스 비용을 절감하기 위한 선택
  - Removal of controller functions ('controllerTransfer' and 'controllerRedeem') and events ('ControllerTransfer' and 'ControllerRedemption') to save gas cost of contract deployment. Those controller functionalities have been included in 'operatorTransferByPartition' and 'operatorRedeemByPartition' functions instead.
  - Export of 'canTransferByPartition' and 'canOperatorTransferByPartition' in optional checker hook [IERC1400TokensChecker](contracts/token/ERC1400Raw/IERC1400TokensChecker.sol) as those functions take a lot of place, although they are not essential, as the result they return can be deduced by calling other view functions of the contract.
 
 
 # Interfaces
 
-For better readability, ER1400 contract has been structured into different parts:
+가독성을 높이기 위해 ER1400 계약서는 여러 부분으로 구성되었습니다:
  - [ERC1400Raw](contracts/token/ERC1400Raw/ERC1400Raw.sol), contains the minimum logic, recommanded to manage financial assets: granular transfer controls with certificate, controllers, hooks, migrations
  - [ERC1400Partition](contracts/token/ERCC1400Partition/ERC1400Partition.sol), introduces the concept of partitionned tokens (partial fungibility)
  - [ERC1400](contracts/token/ERC1400.sol), adds the issuance/redemption logic
@@ -288,7 +289,7 @@ interface IERC20 {
 NB: [ERC1400RawERC20](contracts/token/ERC20/ERC1400RawERC20.sol) has been created in case ERC20 backwards retrocompatibility is required, but not the partitions.
 
 
-## Quick start: How to test the contract?
+## Quick start: Contract를 Test하는 방법은 무엇인가요?
 
 Prerequisites: please make sure you installed "yarn" on your environment.
 ```
